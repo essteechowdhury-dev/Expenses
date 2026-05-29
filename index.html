@@ -451,6 +451,17 @@ async function saveTransaction() {
 }
 
 async function deleteTransaction(id) {
+  if (!confirm("Permanently discard this item row?")) return;
+  try {
+    // Patches the parameter string format to guarantee the cloud engine clears the row target safely
+    const response = await sb.from('transactions').delete().match({ id: id });
+    
+    // Forces a live data pull so the calculation cards on your screen update instantly
+    await loadMonth();
+  } catch(e) {
+    console.error("Database deletion sync failed:", e);
+  }
+}
   if (!confirm("Permanently discard this item record?")) return;
   try { await sb.from('transactions').delete().eq('id', id); } catch(e){}
   loadMonth();
