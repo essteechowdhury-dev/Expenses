@@ -9,274 +9,238 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#2d6a4f">
 <title>Expense Tracker</title>
+<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
-    --bg: #f7f6f3; --surface: #ffffff; --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.14);
-    --text: #1a1a18; --text2: #6b6b67; --text3: #9b9b96; --accent: #2d6a4f; --accent-light: #e8f5ef;
-    --accent2: #d62828; --accent2-light: #fce8e8; --amber: #e07b00; --blue: #1a5f7a;
-    --radius: 14px; --radius-sm: 8px; --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.14);
+    --text: #1a1a18;
+    --text2: #6b6b67;
+    --text3: #9b9b96;
+    --accent: #2d6a4f;
+    --accent-light: #e8f5ef;
+    --accent2: #d62828;
+    --accent2-light: #fce8e8;
+    --amber: #e07b00;
+    --amber-light: #fff3e0;
+    --blue: #1a5f7a;
+    --blue-light: #e3f2f9;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100dvh; max-width: 430px; margin: 0 auto; position: relative; overflow-x: hidden; }
-  #config-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100dvh; padding: 2rem 1.5rem; gap: 1.5rem; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+  }
+  #config-screen {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100dvh; padding: 2rem 1.5rem; gap: 1.5rem;
+  }
   #config-screen h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.5px; }
   #config-screen p { font-size: 15px; color: var(--text2); text-align: center; line-height: 1.6; }
-  .config-card { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; border: 1px solid var(--border); width: 100%; box-shadow: var(--shadow); }
+  .config-card {
+    background: var(--surface); border-radius: var(--radius); padding: 1.5rem;
+    border: 1px solid var(--border); width: 100%; box-shadow: var(--shadow);
+  }
+  .config-card h2 { font-size: 15px; font-weight: 600; margin-bottom: 1rem; }
   .config-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
   .config-field label { font-size: 13px; color: var(--text2); font-weight: 500; }
-  .config-field input { border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 14px; font-family: 'DM Mono', monospace; background: var(--bg); color: var(--text); outline: none; }
-  .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); padding: 12px 20px; font-size: 15px; font-weight: 500; cursor: pointer; width: 100%; }
-  .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.25rem 0.75rem; position: sticky; top: 0; z-index: 50; }
+  .config-field input {
+    border: 1px solid var(--border2); border-radius: var(--radius-sm);
+    padding: 10px 12px; font-size: 14px; font-family: 'DM Mono', monospace;
+    background: var(--bg); color: var(--text); outline: none;
+    transition: border-color 0.15s;
+  }
+  .config-field input:focus { border-color: var(--accent); }
+  .config-hint { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .btn-primary {
+    background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm);
+    padding: 12px 20px; font-size: 15px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+    cursor: pointer; width: 100%; transition: opacity 0.15s;
+  }
+  .btn-primary:active { opacity: 0.85; }
+  .config-error { font-size: 13px; color: var(--accent2); text-align: center; display: none; }
+  .header {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 1rem 1.25rem 0.75rem;
+    position: sticky; top: 0; z-index: 50;
+  }
   .header-top { display: flex; align-items: center; justify-content: space-between; }
-  .header-title { font-size: 18px; font-weight: 600; }
+  .header-title { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
   .month-nav { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-  .month-nav button { background: none; border: 1px solid var(--border2); border-radius: 6px; padding: 4px 8px; font-size: 13px; cursor: pointer; }
-  .month-label { font-size: 13px; font-weight: 500; flex: 1; text-align: center; }
+  .month-nav button {
+    background: none; border: 1px solid var(--border2); border-radius: 6px;
+    padding: 4px 8px; font-size: 13px; cursor: pointer; color: var(--text2);
+  }
+  .month-label {
+    font-size: 13px; font-weight: 500; color: var(--text);
+    flex: 1; text-align: center;
+  }
+  .back-btn {
+    background: none; border: none; font-size: 15px; color: var(--accent);
+    cursor: pointer; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 4px;
+    padding: 0;
+  }
   #app { display: none; }
   .screen { display: none; }
   .screen.active { display: block; }
   .dashboard-content { padding: 1.25rem 1.25rem 120px; }
-  .salary-card { background: var(--accent); color: #fff; border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
-  .salary-label { font-size: 12px; opacity: 0.75; text-transform: uppercase; }
+  .salary-card {
+    background: var(--accent); color: #fff; border-radius: var(--radius);
+    padding: 1.25rem 1.5rem; margin-bottom: 1rem;
+  }
+  .salary-label { font-size: 12px; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
   .salary-row { display: flex; align-items: center; gap: 8px; }
-  .salary-amount { font-size: 32px; font-weight: 600; }
-  .salary-edit-btn { background: rgba(255,255,255,0.2); border: none; border-radius: 6px; color: #fff; padding: 4px 10px; font-size: 13px; cursor: pointer; }
-  .salary-input { font-size: 28px; font-weight: 600; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; color: #fff; width: 160px; padding: 2px 8px; outline: none; }
+  .salary-amount { font-size: 32px; font-weight: 600; letter-spacing: -1px; }
+  .salary-edit-btn {
+    background: rgba(255,255,255,0.2); border: none; border-radius: 6px;
+    color: #fff; padding: 4px 10px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  }
+  .salary-input {
+    font-size: 28px; font-weight: 600; background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.4); border-radius: 8px; color: #fff;
+    width: 160px; padding: 2px 8px; font-family: 'DM Mono', monospace;
+    outline: none;
+  }
   .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
-  .stat-card { background: var(--surface); border-radius: var(--radius-sm); padding: 1rem; border: 1px solid var(--border); box-shadow: var(--shadow); }
-  .stat-label { font-size: 11px; color: var(--text3); text-transform: uppercase; }
-  .stat-value { font-size: 20px; font-weight: 600; }
+  .stat-card {
+    background: var(--surface); border-radius: var(--radius-sm); padding: 1rem;
+    border: 1px solid var(--border); box-shadow: var(--shadow);
+  }
+  .stat-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .stat-value { font-size: 20px; font-weight: 600; letter-spacing: -0.5px; }
   .stat-value.positive { color: var(--accent); }
   .stat-value.negative { color: var(--accent2); }
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .section-title { font-size: 14px; font-weight: 600; color: var(--text2); text-transform: uppercase; }
-  .view-all-btn { font-size: 13px; color: var(--accent); background: none; border: none; cursor: pointer; font-weight: 500; }
+  .stat-value.neutral { color: var(--blue); }
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .section-title { font-size: 14px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+  .view-all-btn {
+    font-size: 13px; color: var(--accent); background: none; border: none;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500;
+  }
   .tx-list { display: flex; flex-direction: column; gap: 8px; }
-  .tx-item { background: var(--surface); border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 12px 14px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; }
+  .tx-item {
+    background: var(--surface); border-radius: var(--radius-sm);
+    border: 1px solid var(--border); overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .tx-main {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+  }
+  .tx-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
   .tx-info { flex: 1; min-width: 0; }
-  .tx-desc { font-size: 14px; font-weight: 500; }
-  .tx-cat { font-size: 12px; color: var(--text3); }
-  .tx-right { text-align: right; }
+  .tx-desc { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tx-cat { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .tx-right { text-align: right; flex-shrink: 0; }
   .tx-amount { font-size: 15px; font-weight: 600; }
   .tx-amount.out { color: var(--accent2); }
   .tx-amount.in { color: var(--accent); }
-  .fab { position: fixed; bottom: calc(24px + var(--safe-bottom)); right: 24px; width: 56px; height: 56px; border-radius: 28px; background: var(--accent); color: #fff; border: none; font-size: 28px; cursor: pointer; box-shadow: 0 4px 20px rgba(45,106,79,0.4); display: flex; align-items: center; justify-content: center; z-index: 40; }
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; display: none; align-items: flex-end; }
+  .tx-date { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .tx-actions { display: flex; gap: 6px; padding: 0 14px 10px; justify-content: flex-end; }
+  .tx-action-btn {
+    background: none; border: 1px solid var(--border2); border-radius: 6px;
+    font-size: 12px; padding: 4px 10px; cursor: pointer; color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tx-action-btn.expand { color: var(--accent); border-color: var(--accent); }
+  .tx-action-btn.delete { color: var(--accent2); border-color: var(--accent2); }
+  .withdrawal-badge {
+    background: var(--amber-light); color: var(--amber);
+    font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px;
+    margin-top: 3px; display: inline-block;  }
+  .sub-entries {
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    display: none; padding: 8px 14px 10px;
+  }
+  .sub-entries.open { display: block; }
+  .sub-entry {
+    display: flex; align-items: center; gap: 10px; padding: 6px 0;
+    border-bottom: 1px solid var(--border); font-size: 13px;
+  }
+  .sub-entry:last-of-type { border-bottom: none; }
+  .sub-entry-cat { font-size: 11px; color: var(--text3); }
+  .sub-entry-desc { flex: 1; color: var(--text); }
+  .sub-entry-amount { font-weight: 500; color: var(--accent2); }
+  .sub-unaccounted {
+    font-size: 12px; color: var(--amber); margin-top: 6px;
+    padding-top: 6px; border-top: 1px dashed var(--border2);
+  }
+  .cat-breakdown {
+    background: var(--surface); border-radius: var(--radius-sm);
+    border: 1px solid var(--border); padding: 1rem 1.25rem;
+    margin-bottom: 1rem; box-shadow: var(--shadow);
+  }
+  .cat-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+  }
+  .cat-row:last-child { border-bottom: none; }
+  .cat-row-label { display: flex; align-items: center; gap: 8px; color: var(--text); }
+  .cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .cat-row-amount { font-weight: 500; color: var(--accent2); }
+  .fab {
+    position: fixed; bottom: calc(24px + var(--safe-bottom)); right: 24px;
+    width: 56px; height: 56px; border-radius: 28px;
+    background: var(--accent); color: #fff; border: none;
+    font-size: 28px; font-weight: 300; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(45,106,79,0.4);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 40; transition: transform 0.15s;
+  }
+  .fab:active { transform: scale(0.93); }
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+    z-index: 100; display: none; align-items: flex-end;
+  }
   .modal-overlay.open { display: flex; }
-  .modal { background: var(--surface); border-radius: 20px 20px 0 0; width: 100%; padding: 1.25rem 1.25rem calc(1.25rem + var(--safe-bottom)); max-height: 92dvh; overflow-y: auto; }
+  .modal {
+    background: var(--surface); border-radius: 20px 20px 0 0;
+    width: 100%; padding: 1.25rem 1.25rem calc(1.25rem + var(--safe-bottom));
+    max-height: 92dvh; overflow-y: auto;
+  }
+  .modal-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 1.25rem; }
+  .modal-title { font-size: 17px; font-weight: 600; margin-bottom: 1.25rem; }
+  .type-toggle {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.25rem;
+  }
+  .type-btn {
+    padding: 10px; border: 1px solid var(--border2); border-radius: var(--radius-sm);
+    background: none; font-size: 14px; font-weight: 500; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; color: var(--text2); transition: all 0.15s;
+  }
+  .type-btn.active.expense { background: var(--accent2-light); border-color: var(--accent2); color: var(--accent2); }
+  .type-btn.active.income { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
   .field { margin-bottom: 1rem; }
   .field label { display: block; font-size: 13px; color: var(--text2); font-weight: 500; margin-bottom: 6px; }
-  .field input, .field select { width: 100%; border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 11px 12px; font-size: 15px; background: var(--bg); color: var(--text); outline: none; }
-  .save-btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 16px; font-weight: 500; cursor: pointer; margin-top: 1rem; }
-  .loading { text-align: center; padding: 3rem; color: var(--text3); }
-</style>
-</head>
-<body>
-
-<div id="config-screen">
-  <div style="text-align:center">
-    <div style="font-size:40px;margin-bottom:12px">💰</div>
-    <h1>Expense Tracker</h1>
-    <p style="margin-top:8px">Connect your Supabase database to get started.</p>
-  </div>
-  <div class="config-card">
-    <h2>Supabase Connection</h2>
-    <div class="config-field">
-      <label>Project URL</label>
-      <input type="text" id="sb-url" placeholder="https://xxxx.supabase.co">
-    </div>
-    <div class="config-field">
-      <label>Publishable Key</label>
-      <input type="text" id="sb-key" placeholder="sb_publishable_...">
-    </div>
-    <button class="btn-primary" onclick="connectSupabase()">Connect & Launch</button>
-  </div>
-</div>
-
-<div id="app">
-  <div id="dashboard" class="screen active">
-    <div class="header">
-      <div class="header-top">
-        <div class="header-title" id="header-month-title">May 2026</div>
-      </div>
-      <div class="month-nav">
-        <button onclick="changeMonth(-1)">‹ Prev</button>
-        <div class="month-label" id="month-label">May 2026</div>
-        <button onclick="changeMonth(1)">Next ›</button>
-      </div>
-    </div>
-    <div class="dashboard-content">
-      <div class="salary-card">
-        <div class="salary-label">Monthly Salary</div>
-        <div class="salary-row">
-          <div id="salary-display" class="salary-amount">€0</div>
-          <button class="salary-edit-btn" onclick="toggleSalaryEdit()">Edit</button>
-        </div>
-        <input type="number" id="salary-input" class="salary-input" style="display:none" placeholder="0" onblur="saveSalary()" onkeydown="if(event.key==='Enter')saveSalary()">
-      </div>
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total Income</div>
-          <div class="stat-value positive" id="stat-income">€0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Total Spent</div>
-          <div class="stat-value negative" id="stat-spent">€0</div>
-        </div>
-      </div>
-      <div class="section-header">
-        <div class="section-title">Transactions</div>
-      </div>
-      <div class="tx-list" id="recent-list">
-        <div class="loading">Loading...</div>
-      </div>
-    </div>
-  </div>
-  <button class="fab" onclick="openAddModal()">+</button>
-</div>
-
-<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <div class="field">
-      <label>Date</label>
-      <input type="date" id="field-date">
-    </div>
-    <div class="field">
-      <label>Category</label>
-      <select id="field-category">
-        <option value="Home">🏠 Home</option>
-        <option value="Bills">💡 Bills</option>
-        <option value="Supermarket">🛒 Supermarket</option>
-        <option value="Transportation">🚇 Transportation</option>
-        <option value="Entertainment">🎬 Entertainment</option>
-        <option value="Others">📦 Others</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Description</label>
-      <input type="text" id="field-desc" placeholder="What was this for?">
-    </div>
-    <div class="field">
-      <label>Amount (€)</label>
-      <input type="number" id="field-amount" placeholder="0.00" step="0.01">
-    </div>
-    <button class="save-btn" onclick="saveTransaction()">Save</button>
-  </div>
-</div>
-
-<script>
-let sb = null, currentMonthKey = '', monthData = { salary: 0, transactions: [] };
-
-function getMonthKey(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
-function formatMonthLabel(key) { const [y,m] = key.split('-'); return new Date(y, m-1, 1).toLocaleDateString('en-GB',{month:'long',year:'numeric'}); }
-function fmt(n) { return '€' + Math.abs(n).toFixed(2); }
-
-function connectSupabase() {
-  const url = document.getElementById('sb-url').value.trim();
-  const key = document.getElementById('sb-key').value.trim();
-  if (!url || !key) return;
-  sb = supabase.createClient(url, key);
-  localStorage.setItem('sb_url', url);
-  localStorage.setItem('sb_key', key);
-  initApp();
-}
-
-async function initApp() {
-  document.getElementById('config-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  try { await sb.auth.signInAnonymously(); } catch (e) {}
-  currentMonthKey = getMonthKey(new Date());
-  updateMonthLabels();
-  loadMonth();
-}
-
-function updateMonthLabels() {
-  const lbl = formatMonthLabel(currentMonthKey);
-  document.getElementById('month-label').textContent = lbl;
-  document.getElementById('header-month-title').textContent = lbl;
-}
-
-function changeMonth(dir) {
-  const [y,m] = currentMonthKey.split('-').map(Number);
-  currentMonthKey = getMonthKey(new Date(y, m-1+dir, 1));
-  updateMonthLabels();
-  loadMonth();
-}
-
-async function loadMonth() {
-  document.getElementById('recent-list').innerHTML = '<div class="loading">Loading...</div>';
-  const { data: sData } = await sb.from('monthly_salary').select('salary').eq('month_key', currentMonthKey).maybeSingle();
-  const { data: tData } = await sb.from('transactions').select('*').eq('month_key', currentMonthKey).order('date', {ascending:false});
-  monthData = { salary: sData?.salary || 0, transactions: tData || [] };
-  render();
-}
-
-function render() {
-  let spent = 0;
-  monthData.transactions.forEach(t => spent += t.amount);
-  document.getElementById('salary-display').textContent = fmt(monthData.salary);
-  document.getElementById('stat-income').textContent = fmt(monthData.salary);
-  document.getElementById('stat-spent').textContent = fmt(spent);
-  
-  const listEl = document.getElementById('recent-list');
-  if (monthData.transactions.length === 0) {
-    listEl.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text3)">No entries this month.</div>';
-    return;
+  .field input, .field select, .field textarea {
+    width: 100%; border: 1px solid var(--border2); border-radius: var(--radius-sm);
+    padding: 11px 12px; font-size: 15px; font-family: 'DM Sans', sans-serif;
+    background: var(--bg); color: var(--text); outline: none; transition: border-color 0.15s;
   }
-  listEl.innerHTML = monthData.transactions.map(t => `
-    <div class="tx-item">
-      <div class="tx-info">
-        <div class="tx-desc">${t.description || t.category}</div>
-        <div class="tx-cat">${t.category}</div>
-      </div>
-      <div class="tx-right">
-        <div class="tx-amount out">-${fmt(t.amount)}</div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function toggleSalaryEdit() {
-  document.getElementById('salary-display').style.display = 'none';
-  const inp = document.getElementById('salary-input');
-  inp.style.display = 'block'; inp.value = monthData.salary; inp.focus();
-}
-
-async function saveSalary() {
-  const val = parseFloat(document.getElementById('salary-input').value) || 0;
-  monthData.salary = val;
-  await sb.from('monthly_salary').upsert({month_key: currentMonthKey, salary: val}, {onConflict:'month_key'});
-  document.getElementById('salary-display').style.display = 'block';
-  document.getElementById('salary-input').style.display = 'none';
-  render();
-}
-
-function openAddModal() {
-  document.getElementById('field-date').value = new Date().toISOString().split('T')[0];
-  document.getElementById('field-desc').value = '';
-  document.getElementById('field-amount').value = '';
-  document.getElementById('modal-overlay').classList.add('open');
-}
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
-
-async function saveTransaction() {
-  const date = document.getElementById('field-date').value;
-  const category = document.getElementById('field-category').value;
-  const description = document.getElementById('field-desc').value.trim();
-  const amount = parseFloat(document.getElementById('field-amount').value) || 0;
-  if (!date || amount <= 0) return;
-  await sb.from('transactions').insert([{ month_key: currentMonthKey, type: 'expense', category, description, amount, date }]);
-  closeModal(); loadMonth();
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  const url = localStorage.getItem('sb_url'), key = localStorage.getItem('sb_key');
-  if (url && key) { sb = supabase.createClient(url, key); initApp(); }
-});
-</script>
-</body>
-</html>
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
+  .field textarea { resize: vertical; min-height: 60px; }
+  .sub-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .sub-section-title { font-size: 14px; font-weight: 600; margin-bottom:
