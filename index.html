@@ -20,14 +20,6 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100dvh; max-width: 430px; margin: 0 auto; position: relative; overflow-x: hidden; }
-  #config-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100dvh; padding: 2rem 1.5rem; gap: 1.5rem; }
-  #config-screen h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.5px; }
-  #config-screen p { font-size: 15px; color: var(--text2); text-align: center; line-height: 1.6; }
-  .config-card { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; border: 1px solid var(--border); width: 100%; box-shadow: var(--shadow); }
-  .config-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
-  .config-field label { font-size: 13px; color: var(--text2); font-weight: 500; }
-  .config-field input { border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 14px; font-family: 'DM Mono', monospace; background: var(--bg); color: var(--text); outline: none; }
-  .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); padding: 12px 20px; font-size: 15px; font-weight: 500; cursor: pointer; width: 100%; }
   .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.25rem 0.75rem; position: sticky; top: 0; z-index: 50; }
   .header-top { display: flex; align-items: center; justify-content: space-between; }
   .header-title { font-size: 18px; font-weight: 600; }
@@ -35,7 +27,7 @@
   .month-nav button { background: none; border: 1px solid var(--border2); border-radius: 6px; padding: 4px 8px; font-size: 13px; cursor: pointer; color: var(--text2); }
   .month-label { font-size: 13px; font-weight: 500; flex: 1; text-align: center; }
   .back-btn { background: none; border: none; font-size: 15px; color: var(--accent); cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 0; }
-  #app { display: none; }
+  #app { display: block; }
   .screen { display: none; }
   .screen.active { display: block; }
   .dashboard-content { padding: 1.25rem 1.25rem 120px; }
@@ -64,13 +56,16 @@
   .tx-info { flex: 1; min-width: 0; }
   .tx-desc { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .tx-cat { font-size: 12px; color: var(--text3); margin-top: 1px; }
-  .tx-right { text-align: right; flex-shrink: 0; }
+  .tx-right { text-align: right; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .tx-amount-block { text-align: right; }
   .tx-amount { font-size: 15px; font-weight: 600; font-family: 'DM Mono', monospace; }
   .tx-amount.out { color: var(--accent2); }
   .tx-amount.in { color: var(--accent); }
   .tx-actions-panel { display: flex; gap: 6px; padding: 0 14px 10px; justify-content: flex-end; border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 2px; }
   .tx-action-button { background: none; border: 1px solid var(--border2); border-radius: 6px; font-size: 12px; padding: 4px 10px; cursor: pointer; color: var(--text2); }
   .tx-action-button.danger { color: var(--accent2); border-color: var(--accent2-light); }
+  .tx-delete-inline { background: none; border: 1px solid var(--border2); border-radius: 6px; font-size: 12px; padding: 4px 8px; cursor: pointer; color: var(--accent2); transition: all 0.1s; }
+  .tx-delete-inline:active { background: var(--accent2-light); }
   .withdrawal-badge { background: var(--amber-light); color: var(--amber); font-size: 11px; font-weight: 500; padding: 1px 6px; border-radius: 20px; margin-left: 4px; display: inline-block; }
   .sub-entries-container { border-top: 1px solid var(--border); background: var(--bg); display: none; padding: 8px 14px 10px; }
   .sub-entries-container.open { display: block; }
@@ -102,43 +97,13 @@
   .sub-entry-form { background: var(--bg); border-radius: var(--radius-sm); padding: 10px; margin-bottom: 8px; border: 1px solid var(--border); }
   .sub-entry-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
   .sub-entry-row .field { margin-bottom: 0; }
-  .sub-entry-form .remove-sub { font-size: 12px; color: var(--accent2); background: none; border: none; cursor: pointer; float: right; }
+  .sub-entry-form .remove-sub { font-size: 12px; color: var(--accent2); background: none; border: none; cursor: float; float: right; }
   .unaccounted-label { font-size: 13px; color: var(--amber); margin-top: 6px; }
   .save-btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 16px; font-weight: 500; cursor: pointer; margin-top: 1rem; }
   .loading { text-align: center; padding: 3rem; color: var(--text3); }
-  .full-content { padding: 1.25rem 1.25rem 100px; }
-  .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text3); }
-  .cat-home { background: #e3f2f9; color: #1a5f7a; }
-  .cat-bills { background: #fff3e0; color: #e07b00; }
-  .cat-supermarket { background: #e8f5ef; color: #2d6a4f; }
-  .cat-transportation { background: #ede7f6; color: #5e35b1; }
-  .cat-entertainment { background: #fce4ec; color: #c2185b; }
-  .cat-others { background: #f5f5f5; color: #616161; }
-  .cat-withdrawal { background: #fff3e0; color: #e07b00; }
-  .cat-savings { background: #e8eaf6; color: #3949ab; }
-  .cat-received { background: #e8f5ef; color: #2d6a4f; }
 </style>
 </head>
 <body>
-
-<div id="config-screen">
-  <div style="text-align:center">
-    <div style="font-size:40px;margin-bottom:12px">💰</div>
-    <h1>Expense Tracker</h1>
-    <p style="margin-top:8px">Connect your Supabase database to view dashboard tracking.</p>
-  </div>
-  <div class="config-card">
-    <div class="config-field">
-      <label>Project URL</label>
-      <input type="text" id="sb-url" placeholder="https://xxxx.supabase.co">
-    </div>
-    <div class="config-field">
-      <label>Publishable Key</label>
-      <input type="text" id="sb-key" placeholder="sb_publishable_...">
-    </div>
-    <button class="btn-primary" onclick="connectSupabase()">Connect & Launch</button>
-  </div>
-</div>
 
 <div id="app">
   <div id="dashboard" class="screen active">
@@ -268,22 +233,7 @@ function formatMonthLabel(key) { const [y,m] = key.split('-'); return new Date(y
 function fmt(n) { return '€' + Math.abs(n).toFixed(2).replace(/\.00$/,''); }
 function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function connectSupabase() {
-  const url = document.getElementById('sb-url').value.trim();
-  const key = document.getElementById('sb-key').value.trim();
-  if (!url || !key) return;
-  try {
-    sb = supabase.createClient(url, key);
-    localStorage.setItem('sb_url', url);
-    localStorage.setItem('sb_key', key);
-    initApp();
-  } catch(e) { alert("Initialization parameter mismatch."); }
-}
-
 async function initApp() {
-  document.getElementById('config-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  try { await sb.auth.signInAnonymously(); } catch (e) {}
   currentMonthKey = getMonthKey(new Date());
   updateMonthLabels();
   loadMonth();
@@ -305,12 +255,12 @@ function changeMonth(dir) {
 
 async function loadMonth() {
   try {
-    document.getElementById('recent-list').innerHTML = '<div class="loading">Updating transaction nodes...</div>';
+    document.getElementById('recent-list').innerHTML = '<div class="loading">Updating ledger cards...</div>';
     const { data: sData } = await sb.from('monthly_salary').select('salary').eq('month_key', currentMonthKey).maybeSingle();
     const { data: tData } = await sb.from('transactions').select('*').eq('month_key', currentMonthKey).order('date', {ascending:false});
     monthData = { salary: sData?.salary || 0, transactions: tData || [] };
     render();
-  } catch(e) { document.getElementById('recent-list').innerHTML = '<div class="empty-state">Database connection dropped. Check tokens.</div>'; }
+  } catch(e) { document.getElementById('recent-list').innerHTML = '<div class="empty-state">Database offline.</div>'; }
 }
 
 function render() {
@@ -341,7 +291,7 @@ function render() {
     listEl.innerHTML = monthData.transactions.length === 0 ? '<div class="empty-state">No transaction logs available.</div>' : monthData.transactions.slice(0, 5).map(t => renderRowItem(t, false)).join('');
     const catEl = document.getElementById('cat-breakdown');
     const sortedCats = Object.entries(catTotals).sort((a,b) => b[1] - a[1]);
-    catEl.innerHTML = sortedCats.length === 0 ? '<div style="font-size:13px; text-align:center; padding:1rem; color:var(--text3);">No active item calculations.</div>' : sortedCats.map(([c, val]) => '<div class="cat-row"><div class="cat-row-label">' + (CAT_ICONS[c]||'📦') + ' ' + c + '</div><div class="cat-row-amount">' + fmt(val) + '</div></div>').join('');
+    catEl.innerHTML = sortedCats.length === 0 ? '<div style="font-size:13px; text-align:center; padding:1rem; color:var(--text3);">No active metrics.</div>' : sortedCats.map(([c, val]) => '<div class="cat-row"><div class="cat-row-label">' + (CAT_ICONS[c]||'📦') + ' ' + c + '</div><div class="cat-row-amount">' + fmt(val) + '</div></div>').join('');
     document.getElementById('full-list').innerHTML = monthData.transactions.length === 0 ? '<div class="empty-state">No transactions cataloged.</div>' : monthData.transactions.map(t => renderRowItem(t, true)).join('');
   } catch(err) { console.error(err); }
 }
@@ -358,8 +308,9 @@ function renderRowItem(t, fullViewMode) {
   if (isWith && subs.length > 0) {
     breakdownMarkup = '<div class="sub-entries-container" id="drawer-' + t.id + '">' + subs.map(s => '<div class="sub-entry-row-item"><span class="sub-entry-label-cat">' + (CAT_ICONS[s.category]||'📦') + ' ' + s.category + '</span><span class="sub-entry-text-desc">' + escHtml(s.description) + '</span><span class="sub-entry-val-amt">-' + fmt(s.amount) + '</span></div>').join('') + (looseCash > 0.005 ? '<div class="sub-unaccounted-flag">⚠️ ' + fmt(looseCash) + ' unaccounted cash</div>' : '') + '</div>';
   }
-  const managementPanel = fullViewMode ? '<div class="tx-actions-panel">' + (isWith && subs.length > 0 ? '<button class="tx-action-button" onclick="toggleDrawer(\'' + t.id + '\')">Items</button>' : '') + '<button class="tx-action-button" onclick="openEditModal(\'' + t.id + '\')">Edit</button><button class="tx-action-button danger" onclick="deleteTransaction(\'' + t.id + '\')">Delete</button></div>' : '';
-  return '<div class="tx-item"><div class="tx-main"><div class="tx-icon ' + stylingClass + '">' + displayIcon + '</div><div class="tx-info"><div class="tx-desc">' + escHtml(t.description || t.category) + '</div><div class="tx-cat">' + t.category + (isWith && subs.length > 0 ? ' <span class="withdrawal-badge">' + subs.length + ' items</span>' : '') + '</div></div><div class="tx-right"><div class="tx-amount ' + (isInc ? 'in' : 'out') + '">' + (isInc ? '+' : '-') + fmt(t.amount) + '</div><div style="font-size:11px; color:var(--text3); margin-top:2px;">' + new Date(t.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + '</div></div></div>' + breakdownMarkup + managementPanel + '</div>';
+  const inlineDelete = '<button class="tx-delete-inline" onclick="deleteTransaction(\'' + t.id + '\'); event.stopPropagation();">✕</button>';
+  const managementPanel = fullViewMode ? '<div class="tx-actions-panel">' + (isWith && subs.length > 0 ? '<button class="tx-action-button" onclick="toggleDrawer(\'' + t.id + '\')">Items</button>' : '') + '<button class="tx-action-button" onclick="openEditModal(\'' + t.id + '\')">Edit</button></div>' : '';
+  return '<div class="tx-item" onclick="' + (isWith ? 'toggleDrawer(\'' + t.id + '\')' : '') + '"><div class="tx-main"><div class="tx-icon ' + stylingClass + '">' + displayIcon + '</div><div class="tx-info"><div class="tx-desc">' + escHtml(t.description || t.category) + '</div><div class="tx-cat">' + t.category + (isWith && subs.length > 0 ? ' <span class="withdrawal-badge">' + subs.length + ' items</span>' : '') + '</div></div><div class="tx-right"><div class="tx-amount-block"><div class="tx-amount ' + (isInc ? 'in' : 'out') + '">' + (isInc ? '+' : '-') + fmt(t.amount) + '</div><div style="font-size:11px; color:var(--text3); margin-top:2px;">' + new Date(t.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + '</div></div>' + inlineDelete + '</div></div>' + breakdownMarkup + managementPanel + '</div>';
 }
 
 function toggleDrawer(id) { const el = document.getElementById('drawer-' + id); if(el) el.classList.toggle('open'); }
@@ -395,7 +346,7 @@ function removeSubEntry(i) { subEntries.splice(i,1); renderSubEntries(); }
 function updateSubField(i, f, v) { subEntries[i][f] = f==='amount' ? (parseFloat(v)||0) : v; if(f==='amount') updateUnaccounted(); }
 
 function renderSubEntries() {
-  document.getElementById('sub-entries-list').innerHTML = subEntries.map((s,i) => '<div class="sub-entry-form"><button class="remove-sub" onclick="removeSubEntry(' + i + ')">Remove</button><div class="sub-entry-row"><div class="field"><label>Category</label><select onchange="updateSubField(' + i + ',\'category\',this.value)">' + CATS.filter(c=>c!=='Withdrawal').map(c=>'<option value="' + c + '" ' + (s.category===c?'selected':'') + '>' + CAT_ICONS[c] + ' ' + c + '</option>').join('') + '</select></div><div class="field"><label>Amount (€)</label><input type="number" value="' + (s.amount||'') + '" step="0.01" oninput="updateSubField(' + i + ',\'amount\',this.value)"></div></div><div class="field" style="margin-top:8px;"><label>Description</label><input type="text" value="' + escHtml(s.description) + '" placeholder="Cash target spend details..." oninput="updateSubField(' + i + ',\'description\',this.value)"></div></div>').join('');
+  document.getElementById('sub-entries-list').innerHTML = subEntries.map((s,i) => '<div class="sub-entry-form"><button class="remove-sub" onclick="removeSubEntry(' + i + ')">Remove</button><div class="sub-entry-row"><div class="field"><label>Category</label><select onchange="updateSubField(' + i + ',\'category\',this.value)">' + CATS.filter(c=>c!=='Withdrawal').map(c=>'<option value="' + c + '" ' + (s.category===c?'selected':'') + '>' + CAT_ICONS[c] + ' ' + c + '</option>').join('') + '</select></div><div class="field"><label>Amount (€)</label><input type="number" value="' + (s.amount||'') + '" step="0.01" oninput="updateSubField(' + i + ',\'amount\',this.value)"></div></div><div class="field" style="margin-top:8px;"><label>Description</label><input type="text" value="' + escHtml(s.description) + '" placeholder="Cash spent details..." oninput="updateSubField(' + i + ',\'description\',this.value)"></div></div>').join('');
   updateUnaccounted();
 }
 
@@ -451,39 +402,17 @@ async function saveTransaction() {
 }
 
 async function deleteTransaction(id) {
-  if (!confirm("Permanently discard this item row?")) return;
-  try {
-    // Patches the parameter string format to guarantee the cloud engine clears the row target safely
-    const response = await sb.from('transactions').delete().match({ id: id });
-    
-    // Forces a live data pull so the calculation cards on your screen update instantly
-    await loadMonth();
-  } catch(e) {
-    console.error("Database deletion sync failed:", e);
-  }
-}
-  if (!confirm("Permanently discard this item record?")) return;
-  try { await sb.from('transactions').delete().eq('id', id); } catch(e){}
+  if (!confirm("Permanently delete this entry?")) return;
+  try { 
+    await sb.from('transactions').delete().match({ id: id });
+  } catch(e){}
   loadMonth();
 }
 
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const target = document.getElementById(name);
-  if(target) target.classList.add('active');
-}
-
 window.addEventListener('DOMContentLoaded', () => {
-  // Hardcodes your project parameters directly into the launcher script
   const url = "https://jikqrfseacrrekpolbsa.supabase.co";
   const key = "sb_publishable_PXXdb5dYgPcAFeK9TJamvQ_Qkxbf6vX";
-  
-  try { 
-    sb = supabase.createClient(url, key); 
-    initApp(); 
-  } catch(e) {
-    alert("Connection script error: " + e.message);
-  }
+  try { sb = supabase.createClient(url, key); initApp(); } catch(e){}
 });
 </script>
 </body>
