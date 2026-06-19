@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="Expenses">
 <title>Expense Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght=300;400;500;600&family=DM+Mono:wght=400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
@@ -369,10 +369,27 @@ async function deleteTransaction(event, id) {
   await loadMonth();
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   const url = "https://jikqrfseacrrekpolbsa.supabase.co";
-  const key = "sb_publishable_PXXdb5dYgpCAFeK9TJamvQ_Qkxbf0800dfO4gA2"; // sb_publishable_PXXdb5dYgPcAFeK9TJamvQ_Qkxbf6vX
-  try { sb = supabase.createClient(url, key); initApp(); } catch(e){}
+  let key = localStorage.getItem('sb_key_clean');
+  
+  if (!key) {
+    key = "sb_publishable_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imppa3FyZnNlYWNycmVrcG9sYnNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA0MTUyMjUsImV4cCI6MjA1NjAwMTIyNX0.WIdFj06g7eG6m9Uf4gCstRIsZ48L4fX6Vn67YwD7yZk";
+  }
+
+  try { 
+    sb = supabase.createClient(url, key); 
+    const { error } = await sb.from('monthly_salary').select('salary').limit(1);
+    if (error && error.message.includes("Invalid API key")) throw new Error("Invalid Key");
+    localStorage.setItem('sb_key_clean', key);
+    initApp(); 
+  } catch(e) {
+    const freshKey = prompt("The default API Key expired or was cut off. Please paste your fresh 'default publishable key' here:");
+    if (freshKey) {
+      localStorage.setItem('sb_key_clean', freshKey.trim());
+      location.reload();
+    }
+  }
 });
 </script>
 </body>
