@@ -313,30 +313,18 @@ function toggleSalaryEdit() {
 async function saveSalary() {
   const val = parseFloat(document.getElementById('salary-input').value) || 0;
   monthData.salary = val;
-  try { await sb.from('monthly_salary').upsert({month_key: currentMonthKey, salary: val}, {onConflict:'month_key'}); } catch(e){}
+  
+  // Added error trap
+  const { error } = await sb.from('monthly_salary').upsert({month_key: currentMonthKey, salary: val}, {onConflict:'month_key'});
+  if (error) {
+    alert("Salary Save Failed! Error: " + error.message + " | Details: " + error.details);
+  }
+  
   document.getElementById('salary-display').textContent = val;
   document.getElementById('salary-display').style.display = 'inline-block';
   document.getElementById('salary-input').style.display = 'none';
   render();
 }
-
-function setType(type) {
-  currentType = type;
-  document.getElementById('type-expense').classList.toggle('active', type === 'expense');
-  document.getElementById('type-income').classList.toggle('active', type === 'income');
-  document.getElementById('cat-wrapper').style.display = type === 'income' ? 'none' : 'block';
-  document.getElementById('amount-label').textContent = type === 'income' ? 'Amount Received (€)' : 'Amount (€)';
-}
-
-function openAddModal() {
-  document.getElementById('field-date').value = new Date().toISOString().split('T')[0];
-  document.getElementById('field-desc').value = '';
-  document.getElementById('field-amount').value = '';
-  document.getElementById('field-category').value = 'Supermarket';
-  setType('expense');
-  document.getElementById('modal-overlay').classList.add('open');
-}
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
 
 async function saveTransaction() {
   const date = document.getElementById('field-date').value;
@@ -346,7 +334,13 @@ async function saveTransaction() {
   if (!date || amount <= 0) return;
   
   const payload = { month_key: currentMonthKey, type: currentType, category, description, amount, date };
-  try { await sb.from('transactions').insert([payload]); } catch(e){}
+  
+  // Added error trap
+  const { error } = await sb.from('transactions').insert([payload]);
+  if (error) {
+    alert("Transaction Save Failed! Error: " + error.message + " | Details: " + error.details);
+  }
+  
   closeModal(); loadMonth();
 }
 
