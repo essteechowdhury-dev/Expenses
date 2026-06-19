@@ -20,7 +20,6 @@
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100dvh; max-width: 430px; margin: 0 auto; position: relative; overflow-x: hidden; }
   
-  /* Header layout */
   .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 1.25rem 0.75rem; position: sticky; top: 0; z-index: 50; }
   .header-top { display: flex; align-items: center; justify-content: space-between; }
   .header-title { font-size: 18px; font-weight: 600; }
@@ -30,15 +29,13 @@
   
   .dashboard-content { padding: 1.25rem 1.25rem 120px; }
   
-  /* Base Cards */
   .salary-card { background: var(--surface); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border); box-shadow: var(--shadow); display: flex; align-items: center; justify-content: space-between; }
   .salary-info-block { display: flex; align-items: center; gap: 10px; }
   .salary-label { font-size: 14px; color: var(--text2); font-weight: 500; }
   .salary-display-val { font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 600; color: var(--text); }
-  .salary-input-inline { border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 14px; width: 90px; text-align: right; font-family: 'DM Mono', monospace; outline: none; }
+  .salary-input-inline { border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 6px 10px; font-size: 14px; width: 90px; text-align: right; font-family: 'DM Mono', monospace; outline: none; background: var(--bg); color: var(--text); }
   .salary-edit-trigger { background: var(--bg); border: 1px solid var(--border2); border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; color: var(--text2); }
   
-  /* Stats Metric Grid Grid */
   .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
   .stat-card { background: var(--surface); border-radius: var(--radius-sm); padding: 1rem; border: 1px solid var(--border); box-shadow: var(--shadow); }
   .stat-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
@@ -46,18 +43,15 @@
   .stat-value.positive { color: var(--accent); }
   .stat-value.negative { color: var(--accent2); }
   
-  /* Section Header Titles */
   .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; margin-top: 1.5rem; }
   .section-title { font-size: 13px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
   
-  /* Category Breakdowns */
   .cat-breakdown { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 0.5rem 1.25rem; margin-bottom: 1.5rem; box-shadow: var(--shadow); }
   .cat-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--bg); font-size: 14px; }
   .cat-row:last-child { border-bottom: none; }
   .cat-row-label { display: flex; align-items: center; gap: 8px; color: var(--text); }
   .cat-row-amount { font-weight: 500; color: var(--text); font-family: 'DM Mono', monospace; }
   
-  /* Transactions Row Elements */
   .tx-list { display: flex; flex-direction: column; gap: 8px; }
   .tx-item { background: var(--surface); border-radius: var(--radius-sm); border: 1px solid var(--border); box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
   .tx-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
@@ -71,10 +65,8 @@
   .tx-delete-btn { background: none; border: 1px solid var(--border2); border-radius: 6px; font-size: 12px; padding: 4px 8px; cursor: pointer; color: var(--text2); transition: all 0.1s; }
   .tx-delete-btn:active { background: var(--accent2-light); color: var(--accent2); border-color: var(--accent2); }
   
-  /* Action FAB Trigger Button */
   .fab { position: fixed; bottom: calc(24px + var(--safe-bottom)); right: 24px; width: 56px; height: 56px; border-radius: 28px; background: var(--accent); color: #fff; border: none; font-size: 28px; cursor: pointer; box-shadow: 0 4px 20px rgba(45,106,79,0.4); display: flex; align-items: center; justify-content: center; z-index: 40; }
   
-  /* Modal Overlay Elements */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; display: none; align-items: flex-end; }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--surface); border-radius: 20px 20px 0 0; width: 100%; padding: 1.25rem 1.25rem calc(1.25rem + var(--safe-bottom)); max-height: 92dvh; overflow-y: auto; }
@@ -88,7 +80,6 @@
   .save-btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 16px; font-weight: 500; cursor: pointer; margin-top: 1rem; }
   .loading { text-align: center; padding: 2rem; color: var(--text3); font-size: 14px; }
   
-  /* Categorized Theme Colors Map styling rules */
   .cat-home { background: #e3f2f9; color: #1a5f7a; }
   .cat-bills { background: #fff3e0; color: #e07b00; }
   .cat-supermarket { background: #e8f5ef; color: #2d6a4f; }
@@ -104,11 +95,11 @@
 <div id="app">
   <div class="header">
     <div class="header-top">
-      <div class="header-title" id="header-month-title">Loading...</div>
+      <div class="header-title" id="header-month-title">Loading Ledger...</div>
     </div>
     <div class="month-nav">
       <button onclick="changeMonth(-1)">‹ Prev</button>
-      <div class="month-label" id="month-label">Loading...</div>
+      <div class="month-label" id="month-label">Loading Ledger...</div>
       <button onclick="changeMonth(1)">Next ›</button>
     </div>
   </div>
@@ -207,7 +198,7 @@ function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 async function initApp() {
   currentMonthKey = getMonthKey(new Date());
   updateMonthLabels();
-  loadMonth();
+  await loadMonth();
 }
 
 function updateMonthLabels() {
@@ -216,21 +207,28 @@ function updateMonthLabels() {
   document.getElementById('header-month-title').textContent = lbl;
 }
 
-function changeMonth(dir) {
+async function changeMonth(dir) {
   const [y,m] = currentMonthKey.split('-').map(Number);
   currentMonthKey = getMonthKey(new Date(y, m-1+dir, 1));
   updateMonthLabels();
-  loadMonth();
+  await loadMonth();
 }
 
 async function loadMonth() {
   try {
-    document.getElementById('ledger-entries-list').innerHTML = '<div class="loading">Updating system lines...</div>';
-    const { data: sData } = await sb.from('monthly_salary').select('salary').eq('month_key', currentMonthKey).maybeSingle();
-    const { data: tData } = await sb.from('transactions').select('*').eq('month_key', currentMonthKey).order('date', {ascending:false});
+    document.getElementById('ledger-entries-list').innerHTML = '<div class="loading">Updating ledger cards...</div>';
+    
+    const { data: sData, error: sErr } = await sb.from('monthly_salary').select('salary').eq('month_key', currentMonthKey).maybeSingle();
+    if (sErr) throw sErr;
+    
+    const { data: tData, error: tErr } = await sb.from('transactions').select('*').eq('month_key', currentMonthKey).order('date', {ascending:false});
+    if (tErr) throw tErr;
+    
     monthData = { salary: sData?.salary || 0, transactions: tData || [] };
     render();
-  } catch(e) { document.getElementById('ledger-entries-list').innerHTML = '<div class="loading">Database connection offline.</div>'; }
+  } catch(e) { 
+    document.getElementById('ledger-entries-list').innerHTML = `<div class="loading" style="color:var(--accent2)">Data Load Error: ${e.message || e}</div>`; 
+  }
 }
 
 function render() {
@@ -239,15 +237,16 @@ function render() {
     const catTotals = { 'Supermarket':0, 'Home':0, 'Bills':0, 'Transportation':0, 'Entertainment':0, 'Savings':0, 'Others':0 };
     
     monthData.transactions.forEach(t => {
-      if (t.type === 'income') { received += t.amount; } 
+      const amt = parseFloat(t.amount) || 0;
+      if (t.type === 'income') { received += amt; } 
       else { 
-        spent += t.amount; 
-        if(catTotals[t.category] !== undefined) { catTotals[t.category] += t.amount; }
-        else { catTotals['Others'] += t.amount; }
+        spent += amt; 
+        if(catTotals[t.category] !== undefined) { catTotals[t.category] += amt; }
+        else { catTotals['Others'] += amt; }
       }
     });
 
-    const totalIncome = monthData.salary + received;
+    const totalIncome = parseFloat(monthData.salary) + received;
     const totalLeft = totalIncome - spent;
 
     document.getElementById('salary-display').textContent = monthData.salary || '0';
@@ -258,7 +257,6 @@ function render() {
     leftEl.textContent = fmt(totalLeft);
     leftEl.className = 'stat-value ' + (totalLeft >= 0 ? 'positive' : 'negative');
 
-    // Render Category spending section block
     const catPanel = document.getElementById('cat-breakdown-panel');
     const activeSpentCats = Object.entries(catTotals).filter(([_, val]) => val > 0).sort((a,b) => b[1] - a[1]);
     
@@ -273,10 +271,9 @@ function render() {
       `).join('');
     }
 
-    // Render Transaction rows with inline deletion sync execution
     const listEl = document.getElementById('ledger-entries-list');
     if (monthData.transactions.length === 0) {
-      listEl.innerHTML = '<div class="loading" style="color:var(--text3)">No entry entries documented.</div>';
+      listEl.innerHTML = '<div class="loading" style="color:var(--text3)">No entries cataloged for this month.</div>';
       return;
     }
     
@@ -312,19 +309,37 @@ function toggleSalaryEdit() {
 
 async function saveSalary() {
   const val = parseFloat(document.getElementById('salary-input').value) || 0;
-  monthData.salary = val;
   
-  // Added error trap
+  const display = document.getElementById('salary-display');
+  const input = document.getElementById('salary-input');
+  display.textContent = val;
+  display.style.display = 'inline-block';
+  input.style.display = 'none';
+
   const { error } = await sb.from('monthly_salary').upsert({month_key: currentMonthKey, salary: val}, {onConflict:'month_key'});
   if (error) {
-    alert("Salary Save Failed! Error: " + error.message + " | Details: " + error.details);
+    alert(`Salary Sync Blocked!\nCode: ${error.code}\nMessage: ${error.message}\nDetails: ${error.details}`);
   }
-  
-  document.getElementById('salary-display').textContent = val;
-  document.getElementById('salary-display').style.display = 'inline-block';
-  document.getElementById('salary-input').style.display = 'none';
-  render();
+  await loadMonth();
 }
+
+function setType(type) {
+  currentType = type;
+  document.getElementById('type-expense').classList.toggle('active', type === 'expense');
+  document.getElementById('type-income').classList.toggle('active', type === 'income');
+  document.getElementById('cat-wrapper').style.display = type === 'income' ? 'none' : 'block';
+  document.getElementById('amount-label').textContent = type === 'income' ? 'Amount Received (€)' : 'Amount (€)';
+}
+
+function openAddModal() {
+  document.getElementById('field-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('field-desc').value = '';
+  document.getElementById('field-amount').value = '';
+  document.getElementById('field-category').value = 'Supermarket';
+  setType('expense');
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
 
 async function saveTransaction() {
   const date = document.getElementById('field-date').value;
@@ -334,23 +349,24 @@ async function saveTransaction() {
   if (!date || amount <= 0) return;
   
   const payload = { month_key: currentMonthKey, type: currentType, category, description, amount, date };
+  closeModal();
   
-  // Added error trap
   const { error } = await sb.from('transactions').insert([payload]);
   if (error) {
-    alert("Transaction Save Failed! Error: " + error.message + " | Details: " + error.details);
+    alert(`Transaction Write Blocked!\nCode: ${error.code}\nMessage: ${error.message}\nDetails: ${error.details}`);
   }
-  
-  closeModal(); loadMonth();
+  await loadMonth();
 }
 
 async function deleteTransaction(event, id) {
   if (event) { event.preventDefault(); event.stopPropagation(); }
-  if (!confirm("Permanently delete this item row?")) return;
-  try {
-    await sb.from('transactions').delete().match({ id: id });
-    await loadMonth();
-  } catch(e){ console.error(e); }
+  if (!confirm("Permanently delete this row?")) return;
+  
+  const { error } = await sb.from('transactions').delete().match({ id: id });
+  if (error) {
+    alert(`Deletion Request Rejected!\nCode: ${error.code}\nMessage: ${error.message}`);
+  }
+  await loadMonth();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
